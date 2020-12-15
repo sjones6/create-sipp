@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+
+const { runner } = require('hygen');
+const Logger = require('./logger');
+const path = require('path');
+const mkdirp = require('mkdirp')
+const defaultTemplates = path.join(__dirname, 'templates');
+const crypto = require('crypto');
+const execa = require('execa');
+const { blueBright } = require('chalk');
+
+const logger = new Logger(console.log.bind(console));
+
+const run = (cmd, cwd) => runner(cmd, {
+  templates: defaultTemplates,
+  cwd,
+  logger,
+  createPrompter: () => require('enquirer'),
+  exec: (action, body) => {
+    const opts = body && body.length > 0 ? { input: body } : {}
+    return execa.shell(action, opts);
+  },
+  debug: !!process.env.DEBUG
+});
+
+(async () => {
+  try {
+    let applicationName = process.argv.slice(2)[0] || 'sipp';
+    let cwd = path.join(process.cwd(), applicationName);
+    if (applicationName === '.') {
+      applicationName = process.cwd().split(path.delimiter).pop();
+      cwd = process.cwd();
+    } else {
+      await mkdirp(cwd);
+    }
+  
+    const today = new Date();
+    await run(`scaffold boilerplate ${applicationName} --key=${crypto.randomBytes(12).toString()}`, cwd);
+    await run(`scaffold db ${applicationName} --migrationDate=${today.getFullYear()}${today.getMonth()}${today.getDay()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`, cwd);
+    await run(`scaffold app ${applicationName}`, path.join(cwd, 'app'));
+    
+    logger.log('\n\n');
+    logger.warn('Installing dependencies ... (this may take a minute)');
+    await execa.command('npm install', {
+      cwd
+    });
+
+    logger.log('\n\n');
+    logger.warn('Doing Initial build ...');
+    await execa.command('npm run build', {
+      cwd
+    });
+
+    logger.log('\n\n');
+    logger.ok('Yay! Your application is ready to go.');
+    logger.log('\n');
+
+    logger.log(`
+      You may now run ${blueBright(`cd ${applicationName} && npm run start`)} to start you app!
+    `);
+  } catch (err) {
+    logger.err(`Failed to initialized: ${err.message}`);
+  }
+})();

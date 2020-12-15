@@ -1,0 +1,13 @@
+---
+to: .env
+---
+
+NODE_ENV=development
+SESSION_SECRET=<%= key %>
+
+## production values
+DATABASE_PORT=
+DATABASE_HOST=
+DATABASE_NAME=
+DATABASE_USER=
+DATABASE_PASSWORD=

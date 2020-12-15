@@ -1,0 +1,25 @@
+---
+to: tsconfig.json
+---
+
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "jsx": "react",
+    "jsxFactory": "h",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["app/*"]
+    },
+    "incremental": true
+  },
+  "exclude": ["node_modules", "dist"]
+}
