@@ -1,6 +1,6 @@
 {
   "name": "create-sipp",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Creates a new Sipp app: https://sipp.dev",
   "bin": "./src/init",
   "scripts": {
@@ -18,7 +18,9 @@
   },
   "author": "Spencer Jones <spencer@sipp.dev>",
   "license": "MIT",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "dependencies": {
     "chalk": "^4.1.0",
     "enquirer": "^2.3.6",
