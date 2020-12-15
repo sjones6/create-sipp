@@ -20,7 +20,7 @@ to: package.json
     "bcrypt": "^5.0.0",
     "passport-local": "^1.0.0",
     "passport": "^0.4.1",
-    "sipp": "^0.0.42",
+    "sipp": "^<%= latest %>",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ const defaultTemplates = path.join(__dirname, 'templates');
 const crypto = require('crypto');
 const execa = require('execa');
 const { blueBright } = require('chalk');
+const axios = require('axios');
 
 const logger = new Logger(console.log.bind(console));
 
@@ -34,9 +35,12 @@ const run = (cmd, cwd) => runner(cmd, {
       await mkdirp(cwd);
     }
   
+    const { latest } = await axios.get('https://registry.npmjs.org/-/package/sipp/dist-tags').then(res => res.data);
     const today = new Date();
-    await run(`scaffold boilerplate ${applicationName} --key=${crypto.randomBytes(48).toString('hex').toUpperCase()}`, cwd);
-    await run(`scaffold db ${applicationName} --migrationDate=${today.getFullYear()}${today.getMonth()}${today.getDay()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`, cwd);
+    const migrationDate = `${today.getFullYear()}${today.getMonth()}${today.getDay()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`;
+    
+    await run(`scaffold boilerplate ${applicationName} --latest=${latest} --key=${crypto.randomBytes(48).toString('hex').toUpperCase()}`, cwd);
+    await run(`scaffold db ${applicationName} --migrationDate=${migrationDate}`, cwd);
     await run(`scaffold app ${applicationName}`, path.join(cwd, 'app'));
     
     logger.log('\n\n');
