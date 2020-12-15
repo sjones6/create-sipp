@@ -35,7 +35,7 @@ const run = (cmd, cwd) => runner(cmd, {
     }
   
     const today = new Date();
-    await run(`scaffold boilerplate ${applicationName} --key=${crypto.randomBytes(12).toString()}`, cwd);
+    await run(`scaffold boilerplate ${applicationName} --key=${crypto.randomBytes(48).toString('hex').toUpperCase()}`, cwd);
     await run(`scaffold db ${applicationName} --migrationDate=${today.getFullYear()}${today.getMonth()}${today.getDay()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`, cwd);
     await run(`scaffold app ${applicationName}`, path.join(cwd, 'app'));
     
@@ -56,7 +56,9 @@ const run = (cmd, cwd) => runner(cmd, {
     logger.log('\n');
 
     logger.log(`
-      You may now run ${blueBright(`cd ${applicationName} && npm run start`)} to start you app!
+      You may now run ${blueBright(`cd ${applicationName} && npm run dev`)} to start you app!
+
+      Visit https://docs.sipp.dev for more info.
     `);
   } catch (err) {
     logger.err(`Failed to initialized: ${err.message}`);
