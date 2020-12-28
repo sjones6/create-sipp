@@ -12,28 +12,33 @@ export const config: IAppConfig = {
    */
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 
-  /**
-   * Which directory will serve static assets. Relative to the current working directory
-   */
-  static: 'public',
+  middleware: {
 
-  /**
-   * Settings for session management.
-   *
-   * See https://www.npmjs.com/package/express-session for options.
-   */
-  session: {
-    secret: process.env.SESSION_SECRET,
-  },
+    /**
+    * Which directory will serve static assets. Relative to the current working directory
+    */
+    static: {
+      path: 'public'
+    },
 
-  /**
-   * Settings for CSRF proection.
-   *
-   * Set to `false` to disable CSRF protection.
-   *
-   * See https://www.npmjs.com/package/csurf for options
-   */
-  csrf: {
-    cookie: true,
-  },
+    /**
+    * Settings for session management.
+    *
+    * See https://www.npmjs.com/package/express-session for options.
+    */
+    session: {
+      secret: process.env.SESSION_SECRET,
+    },
+
+    /**
+    * Settings for CSRF proection.
+    *
+    * Set to `false` to disable CSRF protection.
+    *
+    * See https://www.npmjs.com/package/csurf for options
+    */
+    csrf: {
+      cookie: true,
+    },
+  }
 };
