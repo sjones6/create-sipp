@@ -1,6 +1,6 @@
 {
   "name": "create-sipp",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Creates a new Sipp app: https://sipp.dev",
   "bin": "./src/init",
   "scripts": {
